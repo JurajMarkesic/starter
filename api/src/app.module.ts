@@ -9,7 +9,6 @@ import configuration from './config';
 @Module({
   imports: [
     ConfigModule.forRoot({
-      envFilePath: '../../.env',
       load: [configuration],
       isGlobal: true,
     }),
