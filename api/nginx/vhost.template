@@ -1,0 +1,11 @@
+server {
+  listen 80;
+  server_name ${APP_SERVER_NAME};
+
+  access_log /var/log/nginx/front-access.log;
+  error_log /var/log/nginx/front-error.log;
+
+  location /${APP_PREFIX} {
+    proxy_pass http://api:${APP_PORT};
+  }
+}
