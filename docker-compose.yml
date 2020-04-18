@@ -6,7 +6,7 @@ services:
     build:
       context: api
       dockerfile: docker/dev/Dockerfile-api
-      target: development
+      # target: development
     volumes:
       - ./api:/usr/src/app
       - /usr/src/app/node_modules
@@ -26,7 +26,7 @@ services:
     build:
       context: frontend
       dockerfile: docker/dev/Dockerfile-frontend
-      target: development
+      # target: development
     command: npm run dev
     volumes:
       - ./frontend:/usr/src/app
