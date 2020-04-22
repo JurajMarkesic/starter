@@ -1,4 +1,4 @@
-version: '3.3'
+version: "3.3"
 
 services:
   api:
@@ -16,7 +16,7 @@ services:
     command: npm run start:debug
     networks:
       - api_network
-    env_file: 
+    env_file:
       - .env
     depends_on:
       - redis
@@ -33,8 +33,8 @@ services:
       - /usr/src/app/node_modules
     ports:
       - ${FRONTEND_PORT}:${FRONTEND_PORT}
-    env_file: 
-        - .env
+    env_file:
+      - .env
     environment:
       HOST: 0.0.0.0
       PORT: ${FRONTEND_PORT}

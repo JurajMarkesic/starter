@@ -1,0 +1,11 @@
+-workflow/code conventions
+-auth
+-security
+-monitoring
+-testing workflow
+-cache
+-session
+-swagger auth
+-admin
+-typeORM migrations
+-hot module reloading
