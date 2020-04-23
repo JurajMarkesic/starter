@@ -1,17 +1,17 @@
 import { NestFactory } from '@nestjs/core';
-import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from './app.module';
+import { LoggerService } from './common/LoggerService';
+import { SwaggerSetup } from './common/SwaggerSetup';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, {
+    logger: false,
+  });
 
-  if (process.env.NODE_ENV == 'DEV') {
-    const options = new DocumentBuilder().setTitle('API documentation').build();
-    const document = SwaggerModule.createDocument(app, options);
-    SwaggerModule.setup(process.env.API_PREFIX, app, document);
-  }
-
+  app.useLogger(new LoggerService());
   app.setGlobalPrefix(process.env.API_PREFIX || 'api');
+
+  new SwaggerSetup(app);
 
   await app.listen(process.env.API_PORT || 3000);
 }

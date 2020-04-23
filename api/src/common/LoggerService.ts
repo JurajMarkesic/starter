@@ -8,15 +8,10 @@ export class LoggerService extends Logger {
   constructor() {
     super();
 
+    // Create logs dir if it doesn't exist
     const dirPath = 'logs';
     if (!fs.existsSync(dirPath)) {
       fs.mkdirSync(dirPath);
-    }
-
-    function timezone() {
-      return new Date().toLocaleString('hr', {
-        timeZone: 'Europe/Vienna',
-      });
     }
 
     const options = {
@@ -28,11 +23,7 @@ export class LoggerService extends Logger {
         maxsize: 5242880, // 5MB
         maxFiles: 10,
         colorize: false,
-        format: winston.format.combine(
-          winston.format.timestamp({ format: timezone() }),
-          // winston.format.timestamp({ format: 'DD-MM-YYYY HH:mm:ss' }),
-          winston.format.json(),
-        ),
+        format: winston.format(this.formatJSON)(),
       },
       console: {
         level: 'debug',
@@ -49,28 +40,47 @@ export class LoggerService extends Logger {
     });
   }
 
-  log(message: string) {
+  /**
+   * Adds a datetime string to the log msg object and converts it to json.
+   * @param logEntry
+   */
+  private formatJSON = (logEntry: any) => {
+    const msg = Symbol.for('message');
+    const base = { timestamp: this.getTimeString() };
+    const json = Object.assign(base, logEntry);
+
+    logEntry[msg] = JSON.stringify(json);
+    return logEntry;
+  };
+
+  private getTimeString(): string {
+    return new Date().toLocaleString('hr', {
+      timeZone: 'Europe/Vienna',
+    });
+  }
+
+  log(message: string): void {
     this.logger.log('info', message);
 
     if (process.env.NODE_ENV == 'DEV') {
       super.log(message);
     }
   }
-  error(message: string, trace: string) {
+  error(message: string, trace: string): void {
     this.logger.log('error', message, trace);
 
     if (process.env.NODE_ENV == 'DEV') {
       super.error(message, trace);
     }
   }
-  warn(message: string) {
+  warn(message: string): void {
     this.logger.warn(message);
 
     if (process.env.NODE_ENV == 'DEV') {
       super.warn(message);
     }
   }
-  debug(message: string) {
+  debug(message: string): void {
     this.logger.debug(message);
 
     if (process.env.NODE_ENV == 'DEV') {
