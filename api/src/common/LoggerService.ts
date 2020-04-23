@@ -61,30 +61,17 @@ export class LoggerService extends Logger {
 
   log(message: string): void {
     this.logger.log('info', message);
-
-    if (process.env.NODE_ENV == 'DEV') {
-      super.log(message);
-    }
   }
+
   error(message: string, trace: string): void {
     this.logger.log('error', message, trace);
-
-    if (process.env.NODE_ENV == 'DEV') {
-      super.error(message, trace);
-    }
   }
+
   warn(message: string): void {
     this.logger.warn(message);
-
-    if (process.env.NODE_ENV == 'DEV') {
-      super.warn(message);
-    }
   }
+
   debug(message: string): void {
     this.logger.debug(message);
-
-    if (process.env.NODE_ENV == 'DEV') {
-      super.debug(message);
-    }
   }
 }

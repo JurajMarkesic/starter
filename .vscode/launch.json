@@ -14,9 +14,7 @@
       "port": 9229,
       "restart": true,
       "address": "0.0.0.0",
-      "skipFiles": [
-        "<node_internals>/**"
-      ]
+      "skipFiles": ["<node_internals>/**"]
     },
     {
       "name": "Docker Node.js Launch",

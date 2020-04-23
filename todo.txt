@@ -1,11 +1,9 @@
 -workflow/code conventions
 -auth
--security
+-debugger
 -monitoring
 -testing workflow
--cache
 -session
--swagger auth
+-swagger dto
 -admin
 -typeORM migrations
--hot module reloading

@@ -9,5 +9,9 @@ export default () => ({
     user: process.env.DB_USER,
     password: process.env.DB_PASSWORD,
     synchronize: process.env.DB_RUN_MIGRATIONS,
-  }
+  },
+  cache: {
+    port: parseInt(process.env.CACHE_PORT) || 6379,
+    ttl: process.env.CACHE_TTL,
+  },
 });

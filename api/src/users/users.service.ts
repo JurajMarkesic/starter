@@ -1,4 +1,4 @@
-import { HttpStatus, Injectable } from '@nestjs/common';
+import { CacheStore, CACHE_MANAGER, HttpStatus, Inject, Injectable } from '@nestjs/common';
 import { HttpException } from '@nestjs/common/exceptions/http.exception';
 import { InjectRepository } from '@nestjs/typeorm';
 import { validate } from 'class-validator';
@@ -13,11 +13,21 @@ export class UsersService {
     @InjectRepository(User)
     private usersRepository: Repository<User>,
     private logger: LoggerService,
+    @Inject(CACHE_MANAGER) private readonly cacheStore: CacheStore,
   ) {}
 
-  findAll(): Promise<User[]> {
-    this.logger.log('All users queried');
-    return this.usersRepository.find();
+  async findAll() {
+    let users = await this.cacheStore.get('all_users');
+
+    if (users) {
+      this.logger.log('Getting all users from cache.');
+      return users;
+    }
+
+    users = await this.usersRepository.find();
+    this.cacheStore.set('all_users', users, { ttl: 20 });
+    this.logger.log('Querying all users!');
+    return users;
   }
 
   findOne(id: string): Promise<User> {
