@@ -6,7 +6,7 @@ import * as helmet from 'helmet';
 import * as redis from 'redis';
 import { AppModule } from './app.module';
 import { LoggerService } from './common/LoggerService';
-import { SwaggerSetup } from './common/SwaggerSetup';
+import { setupSwagger } from './common/SwaggerSetup';
 
 declare const module: any;
 
@@ -37,7 +37,7 @@ async function bootstrap() {
     }),
   );
 
-  new SwaggerSetup(app);
+  setupSwagger(app);
 
   await app.listen(process.env.API_PORT || 3000);
 
