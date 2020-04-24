@@ -5,17 +5,17 @@ import * as session from 'express-session';
 import * as helmet from 'helmet';
 import * as redis from 'redis';
 import { AppModule } from './app.module';
-import { LoggerService } from './common/LoggerService';
 import { setupSwagger } from './common/SwaggerSetup';
 
 declare const module: any;
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule, {
-    logger: false,
-  });
+  const app = await NestFactory.create(AppModule);
+  // const app = await NestFactory.create(AppModule, {
+  //   logger: false,
+  // });
 
-  app.useLogger(new LoggerService());
+  // app.useLogger(new LoggerService());
   app.setGlobalPrefix(process.env.API_PREFIX || 'api');
   app.use(helmet());
   app.enableCors();

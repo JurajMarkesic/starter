@@ -1,7 +1,9 @@
 import { CacheStore, CACHE_MANAGER, HttpStatus, Inject, Injectable } from '@nestjs/common';
 import { HttpException } from '@nestjs/common/exceptions/http.exception';
 import { InjectRepository } from '@nestjs/typeorm';
+import { InjectMetric } from '@willsoto/nestjs-prometheus';
 import { validate } from 'class-validator';
+import { Counter } from 'prom-client';
 import { Repository } from 'typeorm';
 import { LoggerService } from './../common/LoggerService';
 import { CreateUserDto } from './dto';
@@ -14,9 +16,11 @@ export class UsersService {
     private usersRepository: Repository<User>,
     private logger: LoggerService,
     @Inject(CACHE_MANAGER) private readonly cacheStore: CacheStore,
+    @InjectMetric('all_users_count') public counter: Counter<string>,
   ) {}
 
   async findAll() {
+    this.counter.inc();
     let users = await this.cacheStore.get('all_users');
 
     if (users) {
