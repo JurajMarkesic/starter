@@ -1,14 +1,15 @@
-import { Body, Controller, Get, Post, Session } from '@nestjs/common';
+import { Body, CacheInterceptor, Controller, Get, Post, Session, UseInterceptors } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { User } from './user.entity';
 import { UsersService } from './users.service';
 
 @Controller('users')
+@UseInterceptors(CacheInterceptor)
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Get()
-  findAll(@Session() session: { aaaa?: number; id: string }) {
+  findAll(@Session() session: { id: string }) {
     console.log('aaaaaaaaaaaaaaaaaaa', session.id);
     return this.usersService.findAll();
   }
