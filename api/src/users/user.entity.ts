@@ -1,19 +1,28 @@
+import { Exclude } from 'class-transformer';
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { PasswordTransformer } from './password.transformer';
 
-@Entity()
+@Entity({
+  name: 'users',
+})
 export class User {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
+  @Column({ length: 255 })
   firstName: string;
 
-  @Column()
+  @Column({ length: 255 })
   lastName: string;
 
-  @Column()
+  @Column({ length: 255 })
   email: string;
 
-  @Column({ default: true })
-  isActive: boolean;
+  @Column({
+    name: 'password',
+    length: 255,
+    transformer: new PasswordTransformer(),
+  })
+  @Exclude()
+  password: string;
 }

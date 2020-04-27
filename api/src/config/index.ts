@@ -14,4 +14,8 @@ export default () => ({
     port: parseInt(process.env.CACHE_PORT) || 6379,
     ttl: process.env.CACHE_TTL,
   },
+  jwt: {
+    secret: process.env.JWT_SECRET,
+    ttl: process.env.JWT_TTL,
+  },
 });

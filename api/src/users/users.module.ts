@@ -8,7 +8,6 @@ import { UsersService } from './users.service';
 
 @Module({
   imports: [TypeOrmModule.forFeature([User]), CommonModule],
-  controllers: [UsersController],
   providers: [
     UsersService,
     makeCounterProvider({
@@ -16,5 +15,7 @@ import { UsersService } from './users.service';
       help: 'Shows the amount of times all users have been queried.',
     }),
   ],
+  controllers: [UsersController],
+  exports: [UsersService],
 })
 export class UsersModule {}

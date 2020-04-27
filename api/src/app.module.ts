@@ -5,6 +5,7 @@ import { PrometheusModule } from '@willsoto/nestjs-prometheus';
 import * as redisStore from 'cache-manager-redis-store';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { AuthModule } from './auth/auth.module';
 import { CommonModule } from './common/common.module';
 import configuration from './config';
 import { UsersModule } from './users/users.module';
@@ -42,8 +43,9 @@ import { UsersModule } from './users/users.module';
       inject: [ConfigService],
     }),
     PrometheusModule.register(),
-    UsersModule,
     CommonModule,
+    AuthModule,
+    UsersModule,
   ],
   controllers: [AppController],
   providers: [AppService],

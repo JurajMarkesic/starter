@@ -1,6 +1,4 @@
-import { Body, CacheInterceptor, Controller, Get, Post, Session, UseInterceptors } from '@nestjs/common';
-import { CreateUserDto } from './dto/create-user.dto';
-import { User } from './user.entity';
+import { CacheInterceptor, Controller, Get, Session, UseInterceptors } from '@nestjs/common';
 import { UsersService } from './users.service';
 
 @Controller('users')
@@ -10,12 +8,7 @@ export class UsersController {
 
   @Get()
   findAll(@Session() session: { id: string }) {
-    console.log('aaaaaaaaaaaaaaaaaaa', session.id);
-    return this.usersService.findAll();
-  }
-
-  @Post()
-  create(@Body() dto: CreateUserDto): Promise<User> {
-    return this.usersService.create(dto);
+    console.log('Session ID: ', session.id);
+    return this.usersService.getAll();
   }
 }
