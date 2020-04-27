@@ -1,3 +1,5 @@
 -workflow/code conventions
--auth
 -testing workflow
+-github hooks
+-travis
+-nuxt auth

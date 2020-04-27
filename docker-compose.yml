@@ -9,9 +9,9 @@ services:
       # target: development
     volumes:
       - ./api:/usr/src/app
-      # - /usr/src/app/node_modules
+      - /usr/src/app/node_modules
     ports:
-      - ${API_PORT}:${API_PORT}
+      - ${APP_PORT}:${APP_PORT}
       - 9229:9229
     command: npm run start:debug
     networks:
@@ -30,7 +30,7 @@ services:
     command: npm run dev
     volumes:
       - ./frontend:/usr/src/app
-      # - /usr/src/app/node_modules
+      - /usr/src/app/node_modules
     ports:
       - ${FRONTEND_PORT}:${FRONTEND_PORT}
     env_file:
@@ -48,9 +48,9 @@ services:
     ports:
       - 80:80
     environment:
-      API_SERVER_NAME: ${API_SERVER_NAME}
-      API_PREFIX: ${API_PREFIX}
-      API_PORT: ${API_PORT}
+      APP_SERVER_NAME: ${APP_SERVER_NAME}
+      APP_PREFIX: ${APP_PREFIX}
+      APP_PORT: ${APP_PORT}
       FRONTEND_PORT: ${FRONTEND_PORT}
     networks:
       - api_network

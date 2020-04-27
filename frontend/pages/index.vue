@@ -1,37 +1,153 @@
 <template>
   <div class="container">
     <div>
-      <logo />
       <h1 class="title">
-        OPG-app
+        Starter app
       </h1>
       <h2 class="subtitle">
-        Frontend for a multi vendor online marketplace
+        <!-- <nuxt-link class="navbar-item" to="/register">Register</nuxt-link>
+        <nuxt-link class="navbar-item" to="/login">Log In</nuxt-link>
+        <nuxt-link class="navbar-item" to="/profile">My Profile</nuxt-link> -->
       </h2>
-      <div class="links">
-        <a href="https://nuxtjs.org/" target="_blank" class="button--green">
-          Documentation
-        </a>
-        <a
-          href="https://github.com/nuxt/nuxt.js"
-          target="_blank"
-          class="button--grey"
-        >
-          GitHub
-        </a>
+      <div v-if="isLoggedIn">
+        <h4>Hi {{ user.firstName }}</h4>
+        <nuxt-link class="navbar-item" to="/profile">My Profile</nuxt-link>
+        <button class="button is-dark is-fullwidth" @click.prevent="logout">
+          Log out
+        </button>
+      </div>
+      <div v-else>
+        <h3 v-if="registerForm.error">{{ registerForm.error }}</h3>
+        <h3>Register:</h3>
+        <form method="post" @submit.prevent="register">
+          <div class="field">
+            <label class="label">firstName</label>
+            <div class="control">
+              <input v-model="registerForm.firstName" type="text" class="input" name="firstName" required />
+            </div>
+          </div>
+          <div class="field">
+            <label class="label">lastName</label>
+            <div class="control">
+              <input v-model="registerForm.lastName" type="text" class="input" name="lastName" required />
+            </div>
+          </div>
+          <div class="field">
+            <label class="label">Email</label>
+            <div class="control">
+              <input v-model="registerForm.email" type="email" class="input" name="email" required />
+            </div>
+          </div>
+          <div class="field">
+            <label class="label">Password</label>
+            <div class="control">
+              <input v-model="registerForm.password" type="password" class="input" name="password" required />
+            </div>
+          </div>
+          <div class="control">
+            <button type="submit" class="button is-dark is-fullwidth">
+              Register
+            </button>
+          </div>
+        </form>
+
+        <br />
+        <br />
+        <br />
+
+        <h3 v-if="loginForm.error">{{ loginForm.error }}</h3>
+        <h3>Login:</h3>
+        <form method="post" @submit.prevent="login">
+          <div class="field">
+            <label class="label">Email</label>
+            <div class="control">
+              <input v-model="loginForm.email" type="email" class="input" name="email" />
+            </div>
+          </div>
+          <div class="field">
+            <label class="label">Password</label>
+            <div class="control">
+              <input v-model="loginForm.password" type="password" class="input" name="password" />
+            </div>
+          </div>
+          <div class="control">
+            <button type="submit" class="button is-dark is-fullwidth">Log In</button>
+          </div>
+        </form>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import Logo from '~/components/Logo.vue'
+import { mapState } from 'vuex';
 
 export default {
-  components: {
-    Logo
-  }
-}
+  data() {
+    return {
+      registerForm: {
+        firstName: '',
+        lastName: '',
+        email: '',
+        password: '',
+        error: null,
+      },
+      loginForm: {
+        email: '',
+        password: '',
+        error: null,
+      },
+    };
+  },
+
+  computed: {
+    ...mapState({
+      isLoggedIn: (state) => state.auth.loggedIn,
+      user: (state) => state.auth.user,
+    }),
+  },
+
+  methods: {
+    async register() {
+      try {
+        await this.$store.dispatch('users/register', {
+          firstName: this.registerForm.firstName,
+          lastName: this.registerForm.lastName,
+          email: this.registerForm.email,
+          password: this.registerForm.password,
+        });
+
+        await this.$auth.loginWith('local', {
+          data: {
+            email: this.registerForm.email,
+            password: this.registerForm.password,
+          },
+        });
+
+        this.$router.push('/profile');
+      } catch (e) {
+        console.log('register -> e', e);
+        this.registerForm.error = e.response.data.message;
+      }
+    },
+    async login() {
+      try {
+        await this.$auth.loginWith('local', {
+          data: {
+            email: this.loginForm.email,
+            password: this.loginForm.password,
+          },
+        });
+      } catch (e) {
+        console.log('login -> e', e);
+        this.loginForm.error = e.response.data.message;
+      }
+    },
+    async logout() {
+      await this.$auth.logout();
+    },
+  },
+};
 </script>
 
 <style>
@@ -45,8 +161,6 @@ export default {
 }
 
 .title {
-  font-family: 'Quicksand', 'Source Sans Pro', -apple-system, BlinkMacSystemFont,
-    'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
   display: block;
   font-weight: 300;
   font-size: 100px;
@@ -60,9 +174,5 @@ export default {
   color: #526488;
   word-spacing: 5px;
   padding-bottom: 15px;
-}
-
-.links {
-  padding-top: 15px;
 }
 </style>

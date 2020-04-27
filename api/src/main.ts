@@ -16,7 +16,7 @@ async function bootstrap() {
   // });
 
   // app.useLogger(new LoggerService());
-  app.setGlobalPrefix(process.env.API_PREFIX || 'api');
+  app.setGlobalPrefix(process.env.APP_PREFIX || 'api');
   app.use(helmet());
   app.enableCors();
   app.use(
@@ -39,7 +39,7 @@ async function bootstrap() {
 
   setupSwagger(app);
 
-  await app.listen(process.env.API_PORT || 3000);
+  await app.listen(process.env.APP_PORT || 3000);
 
   if (module.hot) {
     module.hot.accept();

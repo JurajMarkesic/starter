@@ -1,6 +1,6 @@
 server {
   listen 80;
-  server_name ${API_SERVER_NAME};
+  server_name ${APP_SERVER_NAME};
 
   gzip            on;
   gzip_types      text/plain application/xml text/css application/javascript;
@@ -11,8 +11,8 @@ server {
   access_log /var/log/nginx/front-access.log;
   error_log /var/log/nginx/front-error.log;
 
-  location /${API_PREFIX} {
-    proxy_pass http://api:${API_PORT};
+  location /${APP_PREFIX} {
+    proxy_pass http://api:${APP_PORT};
   }
 
   location / {

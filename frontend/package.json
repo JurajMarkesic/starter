@@ -13,12 +13,15 @@
     "test": "jest"
   },
   "dependencies": {
+    "@nuxtjs/auth": "^4.9.1",
     "@nuxtjs/axios": "^5.3.6",
     "@nuxtjs/component-cache": "^1.1.5",
     "@nuxtjs/dotenv": "^1.4.0",
     "cross-env": "^5.2.0",
+    "eslint-config-airbnb-base": "^14.1.0",
     "fastify": "^1.13.3",
-    "nuxt": "^2.0.0"
+    "nuxt": "^2.0.0",
+    "vuex": "^3.3.0"
   },
   "devDependencies": {
     "nodemon": "^1.18.9",
