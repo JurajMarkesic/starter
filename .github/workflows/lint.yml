@@ -34,6 +34,7 @@ jobs:
           eslint: true
           # prettier: true
           eslint_dir: api/
+          auto_fix: true
 
       - name: Run Frontend linter
         uses: samuelmeuli/lint-action@v1
@@ -44,3 +45,4 @@ jobs:
           eslint: true
           # prettier: true
           eslint_dir: frontend/
+          auto_fix: true
