@@ -108,6 +108,7 @@ export default {
   },
 
   methods: {
+    // test comment
     async register() {
       try {
         await this.$store.dispatch('users/register', {
