@@ -1,5 +1,8 @@
+// eslint-disable-next-line
 const webpack = require('webpack');
+// eslint-disable-next-line
 const nodeExternals = require('webpack-node-externals');
+// eslint-disable-next-line
 const StartServerPlugin = require('start-server-webpack-plugin');
 
 module.exports = function(options) {
